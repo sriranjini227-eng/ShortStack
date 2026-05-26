@@ -56,7 +56,9 @@ The React app runs at `http://127.0.0.1:5173` and the API runs at `http://127.0.
 - QR code for each short URL
 - Optional link expiry
 - Hashed passwords and environment-based configuration
+## Loom video LINK
 
+https://www.loom.com/share/189edd3dc6d44ca69c0d0333aaabd3ee
 
 
 This project is a part of a hackathon run by https://katomaran.com
