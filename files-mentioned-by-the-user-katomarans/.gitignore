@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+npm-debug.log*
+
+*.log
+api
+api.err
+vite
+vite.err
