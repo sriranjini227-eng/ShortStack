@@ -1,4 +1,4 @@
-# Katomarans URL Shortener
+#  URL Shortener
 
 A full-stack URL shortener with authentication, protected user dashboard, server-side redirects, click analytics, custom aliases, QR codes, expiry dates, and daily click charts.
 
