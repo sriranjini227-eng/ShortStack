@@ -1,5 +1,7 @@
 const crypto = require("crypto");
+const fs = require("fs/promises");
 const mongoose = require("mongoose");
+const path = require("path");
 const connectDb = require("../config/db");
 const Link = require("../models/Link");
 const User = require("../models/User");
@@ -9,6 +11,7 @@ const memory = {
   users: [],
   links: []
 };
+const memoryDbPath = path.join(__dirname, "..", "..", ".data", "db.json");
 
 function clone(value) {
   return JSON.parse(JSON.stringify(value));
@@ -31,10 +34,30 @@ function normalizeMemoryLink(link) {
   };
 }
 
+async function loadMemoryDb() {
+  try {
+    const raw = await fs.readFile(memoryDbPath, "utf8");
+    const parsed = JSON.parse(raw);
+    memory.users = Array.isArray(parsed.users) ? parsed.users : [];
+    memory.links = Array.isArray(parsed.links) ? parsed.links : [];
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.warn(`Could not load local demo database: ${error.message}`);
+    }
+  }
+}
+
+async function saveMemoryDb() {
+  if (mode === "mongo") return;
+  await fs.mkdir(path.dirname(memoryDbPath), { recursive: true });
+  await fs.writeFile(memoryDbPath, JSON.stringify(memory, null, 2));
+}
+
 async function initStore() {
   if (process.env.MEMORY_DB === "true") {
     mode = "memory";
-    console.warn("Using in-memory demo storage because MEMORY_DB=true");
+    await loadMemoryDb();
+    console.warn("Using local JSON demo storage because MEMORY_DB=true");
     return;
   }
 
@@ -47,7 +70,8 @@ async function initStore() {
     }
 
     mode = "memory";
-    console.warn("MongoDB unavailable. Using in-memory demo storage for this run.");
+    await loadMemoryDb();
+    console.warn("MongoDB unavailable. Using local JSON demo storage for this run.");
     console.warn(error.message);
   }
 }
@@ -75,6 +99,7 @@ async function createUser({ name, email, passwordHash }) {
     updatedAt: now
   };
   memory.users.push(user);
+  await saveMemoryDb();
   return clone(user);
 }
 
@@ -107,6 +132,7 @@ async function createLink({ user, originalUrl, code, expiresAt }) {
     updatedAt: now
   };
   memory.links.push(link);
+  await saveMemoryDb();
   return normalizeMemoryLink(clone(link));
 }
 
@@ -124,6 +150,7 @@ async function updateLinkForUser(id, userId, updates) {
   const link = memory.links.find((item) => item._id === id && item.user === userId);
   if (!link) return null;
   Object.assign(link, updates, { updatedAt: new Date().toISOString() });
+  await saveMemoryDb();
   return normalizeMemoryLink(clone(link));
 }
 
@@ -133,6 +160,7 @@ async function deleteLinkForUser(id, userId) {
   const index = memory.links.findIndex((item) => item._id === id && item.user === userId);
   if (index === -1) return null;
   const [deleted] = memory.links.splice(index, 1);
+  await saveMemoryDb();
   return normalizeMemoryLink(clone(deleted));
 }
 
@@ -162,6 +190,7 @@ async function recordVisit(code, visit) {
   });
   link.visits = link.visits.slice(0, 500);
   link.updatedAt = new Date().toISOString();
+  await saveMemoryDb();
   return normalizeMemoryLink(clone(link));
 }
 

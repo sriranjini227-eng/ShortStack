@@ -33,7 +33,7 @@ A full-stack URL shortener with authentication, protected user dashboard, server
    docker compose up -d
    ```
 
-   If MongoDB is unavailable during local development, the API falls back to in-memory demo storage so the UI and full workflow can still be tested. Set `REQUIRE_MONGO=true` in `.env` when you want startup to fail unless MongoDB connects.
+   If MongoDB is unavailable during local development, the API falls back to local JSON demo storage at `server/.data/db.json` so the UI and full workflow can still be tested. Set `REQUIRE_MONGO=true` in `.env` when you want startup to fail unless MongoDB connects.
 
 5. Run the app:
 
