@@ -112,9 +112,6 @@ http://127.0.0.1:4000
 Live Application:
 https://short-stack-two.vercel.app/
 
-Demo Video:
-https://www.loom.com/share/189edd3dc6d44ca69c0d0333aaabd3ee
-
 ## Future Improvements
 
 - Password reset via email
