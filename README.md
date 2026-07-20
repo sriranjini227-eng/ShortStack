@@ -1,64 +1,130 @@
-#  URL Shortener
+# ShortStack
 
-A full-stack URL shortener with authentication, protected user dashboard, server-side redirects, click analytics, custom aliases, QR codes, expiry dates, and daily click charts.
+A full-stack URL shortener application with secure authentication, protected user dashboards, server-side redirects, click analytics, custom aliases, QR code generation, link expiry, and daily click trends.
+
+## Features
+
+- Secure user signup and login using JWT authentication
+- Protected dashboard for managing personal links
+- Create short URLs with optional custom aliases
+- Server-side URL redirection
+- QR code generation for each short URL
+- Optional link expiry
+- Copy, edit, and delete shortened links
+- Click analytics including:
+  - Total clicks
+  - Last visited time
+  - Recent visit history
+  - Browser and device information
+  - Daily click trends
+- Long URL validation
+- Per-user link ownership
+- Responsive user interface
 
 ## Tech Stack
 
-- Frontend: React, Vite, React Router, Recharts, qrcode.react, lucide-react
-- Backend: Node.js, Express, MongoDB, Mongoose
-- Auth: JWT with bcrypt password hashing
-- APIs: REST
+### Frontend
+- React
+- Vite
+- React Router
+- Recharts
+- qrcode.react
+- lucide-react
 
-## Setup
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
 
-1. Install dependencies:
+### Authentication
+- JWT
+- bcrypt
 
-   ```bash
-   npm install
-   ```
+## Installation
 
-2. Create environment config:
+### 1. Clone the repository
 
-   ```bash
-   copy .env.example .env
-   ```
+```bash
+git clone https://github.com/sriranjini227-eng/ShortStack.git
+cd ShortStack
+```
 
-3. Update `.env` with your MongoDB URI and JWT secret.
+### 2. Install dependencies
 
-4. Start MongoDB locally or use a hosted MongoDB URI.
+```bash
+npm install
+```
 
-   With Docker:
+### 3. Configure environment variables
 
-   ```bash
-   docker compose up -d
-   ```
+```bash
+cp .env.example .env
+```
 
-   If MongoDB is unavailable during local development, the API falls back to local JSON demo storage at `server/.data/db.json` so the UI and full workflow can still be tested. Set `REQUIRE_MONGO=true` in `.env` when you want startup to fail unless MongoDB connects.
+Update the `.env` file with:
 
-5. Run the app:
+- MongoDB URI
+- JWT Secret
 
-   ```bash
-   npm run dev
-   ```
+### 4. Start MongoDB
 
-The React app runs at `http://127.0.0.1:5173` and the API runs at `http://127.0.0.1:4000`.
+Run MongoDB locally or use a MongoDB Atlas connection string.
 
-## Implemented Requirements
+### Optional: Docker
 
-- User signup and login
-- Protected dashboard routes
-- Per-user short link ownership
-- Long URL validation
-- Unique short codes and optional custom aliases
-- Server-side redirect handling
-- Delete links and copy short links from the UI
-- Click counts, last visit, recent visit history, and daily click chart
-- QR code for each short URL
-- Optional link expiry
-- Hashed passwords and environment-based configuration
-## Loom video LINK
+```bash
+docker compose up -d
+```
 
+If MongoDB is unavailable during local development, the backend falls back to local JSON storage located at:
+
+```
+server/.data/db.json
+```
+
+To require MongoDB during startup, set:
+
+```
+REQUIRE_MONGO=true
+```
+
+### 5. Run the application
+
+```bash
+npm run dev
+```
+
+Frontend:
+
+```
+http://127.0.0.1:5173
+```
+
+Backend:
+
+```
+http://127.0.0.1:4000
+```
+
+## Demo
+
+Live Application:
+https://short-stack-two.vercel.app/
+
+Demo Video:
 https://www.loom.com/share/189edd3dc6d44ca69c0d0333aaabd3ee
 
+## Future Improvements
 
-This project is a part of a hackathon run by https://katomaran.com
+- Password reset via email
+- Advanced analytics dashboard
+- Link search and filtering
+- Export analytics
+- Custom domains
+- Rate limiting
+- Unit and integration testing
+
+## License
+
+This project is intended for learning and portfolio purposes.
